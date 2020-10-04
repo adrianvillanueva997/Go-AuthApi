@@ -13,8 +13,8 @@ jobs:
         with:
           host: ${{ secrets.HOST }}
           port: ${{ secrets.PORT }}
-          key: ${{ secret.SSH_KEY }}
-          username: ${{ secret.USERNAME }}
+          key: ${{ secrets.SSH_KEY }}
+          username: ${{ secrets.USERNAME }}
           script: |
             cd Go-AuthApi
             git pull origin master
