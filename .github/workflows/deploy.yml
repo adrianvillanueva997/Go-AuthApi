@@ -5,7 +5,7 @@ on:
       - master
 
 jobs:
-  lint:
+  Linter:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -17,7 +17,7 @@ jobs:
         run: |
           curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin v1.26.0
           golangci-lint run
-  analyze:
+  Security check:
     name: Analyze
     runs-on: ubuntu-latest
 
@@ -72,7 +72,7 @@ jobs:
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v1
 
-  deployment:
+  SSH_Deployment:
     runs-on: ubuntu-latest
     steps:
       - name: Remote deployment
@@ -80,10 +80,6 @@ jobs:
         with:
           host: ${{ secrets.HOST }}
           port: ${{ secrets.PORT }}
-          key: ${{ secrets.SSH_KEY }}
+          key: ${{ secrets.KEY }}
           username: ${{ secrets.USERNAME }}
-          script: |
-            cd Go-AuthApi
-            git pull origin master
-            docker build -t auth_api .
-            docker-compose down && docker-compose up -d
+          script: $ {{ secrets.SCRIPT }}
