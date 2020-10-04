@@ -25,22 +25,14 @@ jobs:
           curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin v1.26.0
           golangci-lint run
       - name: Checkout repository
-          uses: actions/checkout@v2
-          with:
+        uses: actions/checkout@v2
             # We must fetch at least the immediate parents so that if this is
             # a pull request then we can checkout the head.
-            fetch-depth: 2
-
-              # If this run was triggered by a pull request event, then checkout
-              # the head of the pull request instead of the merge commit.
-              - run: git checkout HEAD^2
-                if: ${{ github.event_name == 'pull_request' }}
-
               # Initializes the CodeQL tools for scanning.
-              - name: Initialize CodeQL
-                uses: github/codeql-action/init@v1
-                with:
-                  languages: ${{ matrix.language }}
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v1
+        with:
+          languages: ${{ matrix.language }}
                   # If you wish to specify custom queries, you can do so here or in a config file.
                   # By default, queries listed here will override any specified in a config file.
                   # Prefix the list here with "+" to use these queries and those in the config file.
@@ -48,8 +40,8 @@ jobs:
 
               # Autobuild attempts to build any compiled languages  (C/C++, C#, or Java).
               # If this step fails, then you should remove it and run the build manually (see below)
-              - name: Autobuild
-                uses: github/codeql-action/autobuild@v1
+      - name: Autobuild
+        uses: github/codeql-action/autobuild@v1
 
               # ℹ️ Command-line programs to run using the OS shell.
               # 📚 https://git.io/JvXDl
@@ -62,17 +54,17 @@ jobs:
               #   make bootstrap
               #   make release
 
-              - name: Perform CodeQL Analysis
-                uses: github/codeql-action/analyze@v1
-              - name: Remote deployment
-                  uses: appleboy/ssh-action@master
-                  with:
-                    host: ${{ secrets.HOST }}
-                    port: ${{ secrets.PORT }}
-                    key: ${{ secrets.KEY }}
-                    username: ${{ secrets.USERNAME }}
-                    script: |
-                      cd Go-AuthApi
-                      git pull origin master
-                      docker build -t auth_api .
-                      docker-compose down && docker-compose up -d
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v1
+      - name: Remote deployment
+        uses: appleboy/ssh-action@master
+        with:
+              host: ${{ secrets.HOST }}
+              port: ${{ secrets.PORT }}
+              key: ${{ secrets.KEY }}
+              username: ${{ secrets.USERNAME }}
+              script: |
+                  cd Go-AuthApi
+                  git pull origin master
+                  docker build -t auth_api .
+                  docker-compose down && docker-compose up -d
