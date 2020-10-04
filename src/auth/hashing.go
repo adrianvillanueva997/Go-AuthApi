@@ -2,13 +2,13 @@ package auth
 
 import (
 	"golang.org/x/crypto/bcrypt"
-	"log"
 )
 
 func getPwd(password string) []byte {
 	return []byte(password)
 }
 
+/*
 func hashAndSalt(pwd []byte) string {
 
 	hash, err := bcrypt.GenerateFromPassword(pwd, bcrypt.MinCost)
@@ -17,7 +17,7 @@ func hashAndSalt(pwd []byte) string {
 	}
 	return string(hash)
 }
-
+*/
 func comparePasswords(hashedPwd string, plainPwd []byte) bool {
 	byteHash := []byte(hashedPwd)
 	err := bcrypt.CompareHashAndPassword(byteHash, plainPwd)
@@ -33,10 +33,6 @@ func CheckUser(username string, password string) bool {
 		return false
 	}
 	pwd := getPwd(password)
-	pwdResult := comparePasswords(user.password, pwd)
-	if pwdResult {
-		return true
-	}
-	return false
-
+	return comparePasswords(user.password, pwd)
+	
 }
