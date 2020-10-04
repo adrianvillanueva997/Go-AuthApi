@@ -21,7 +21,6 @@ func hashAndSalt(pwd []byte) string {
 func comparePasswords(hashedPwd string, plainPwd []byte) error {
 	byteHash := []byte(hashedPwd)
 	return bcrypt.CompareHashAndPassword(byteHash, plainPwd)
-
 }
 
 func CheckUser(username string, password string) bool {
@@ -35,5 +34,4 @@ func CheckUser(username string, password string) bool {
 	} else {
 		return false
 	}
-
 }

@@ -1,7 +1,7 @@
 package auth
 
 import (
-	db "Auth_Api/src/db"
+	"Auth_Api/src/db"
 	"log"
 )
 
