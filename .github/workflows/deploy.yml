@@ -1,0 +1,22 @@
+name: Remote Deployment
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  deployment:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Remote deployment
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          port: ${{ secrets.PORT }}
+          key: ${{ secret.SSH_KEY }}
+          username: ${{ secret.USERNAME }}
+          script: |
+            cd Go-AuthApi
+            git pull origin master
+            docker build -t auth_api .
+            docker-compose down && docker-compose up -d
