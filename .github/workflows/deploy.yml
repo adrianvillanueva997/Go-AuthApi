@@ -66,6 +66,8 @@ jobs:
           username: ${{ secrets.USERNAME }}
           script: |
             cd Go-AuthApi
+            docker-compose down
+            docker image rm auth_api
             git pull origin master
             docker build -t auth_api .
-            docker-compose down && docker-compose up -d
+            docker-compose up -d
